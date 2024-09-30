@@ -3,10 +3,12 @@ import "./styles/App.css";
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
-        Welcome to Thief's Escape!
-      </h1>
-      <h2>This is a second title here!</h2>
+      <div class="flex flex-col justify-center items-center h-screen bg-gray-900">
+        <h1 class="text-white text-3xl font-bold underline mb-10">
+          Welcome to A Thief's Escape
+        </h1>
+        <div class="bg-black w-[60vw] h-[60vh] p-8 text-center"></div>
+      </div>
     </>
   );
 }
