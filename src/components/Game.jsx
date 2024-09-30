@@ -19,22 +19,22 @@ const Game = () => {
 
   return (
     <>
-      {gameState === "start" && (
-        <div className="flex flex-col justify-center items-center mb-5 gap-5">
-          <h1 className="text-white text-3xl font-bold underline">
-            Welcome to A Thief's Escape
-          </h1>
-          <p className="text-white text-lg">↑ to jump and ↓ to duck</p>
-          <button
-            onClick={startGame}
-            className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700"
-          >
-            Start Game
-          </button>
-        </div>
-      )}
       <div className="bg-black w-[60vw] h-[60vh] text-center rounded-lg">
         <div className="main h-[90%]">
+          {gameState === "start" && (
+            <div className="flex flex-col justify-center items-center mb-5 gap-5">
+              <h1 className="text-white text-3xl font-bold underline">
+                Welcome to A Thief's Escape
+              </h1>
+              <p className="text-white text-lg">↑ to jump and ↓ to duck</p>
+              <button
+                onClick={startGame}
+                className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700"
+              >
+                Start Game
+              </button>
+            </div>
+          )}
           {gameState === "finished" && (
             <div className="text-center z-50 text-white">
               <h2 className="text-3xl mb-4 font-bold ">Game Over!</h2>
