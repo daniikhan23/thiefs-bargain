@@ -1,12 +1,17 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Sprite, useTick } from "@pixi/react";
 import { Texture, Rectangle } from "pixi.js";
 import thiefSprite from "../../public/assets/sprites/thief-1.0/PNG/48x64_scale2x/thief.png";
 
+const GROUND_Y = 400;
+const JUMP_VELOCITY = 15;
+const GRAVITY = 0.75;
+
 const Player = ({ position }) => {
   const [xPosition, setXPosition] = useState(position.x);
   const [yPosition, setYPosition] = useState(position.y);
-  const [isJumping, setIsJumping] = useState(false);
+  const [isJumping, setIsJumping] = useState("grounded");
+  const [jumpVelocity, setJumpVelocity] = useState(0);
   const [isDucking, setIsDucking] = useState(false);
 
   const spriteTexture = useMemo(() => {
@@ -27,19 +32,43 @@ const Player = ({ position }) => {
     }
   }, []);
 
-  useTick((delta) => {
-    // for jumping + ducking
-  });
-
-  const jump = () => {
-    if (!isJumping && !isDucking) setIsJumping(true);
-    // TODO - with up arrow key (will figure out mobile later)
-  };
+  const jump = useCallback(() => {
+    if (isJumping === "grounded" && !isDucking) {
+      setIsJumping("ascending");
+      setJumpVelocity(JUMP_VELOCITY);
+    }
+  }, [isJumping]);
 
   const duck = () => {
     if (!isJumping && !isDucking) setIsDucking(true);
     // TODO - with down arrow key (will figure out mobile later)
   };
+
+  // Keyboard input
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === "ArrowUp" || event.code === "Space") {
+        jump();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [jump]);
+
+  // for jumping + ducking
+  useTick((delta) => {
+    if (isJumping !== "grounded") {
+      setYPosition((prev) => prev - jumpVelocity * delta);
+      setJumpVelocity((prev) => prev - GRAVITY * delta);
+
+      if (yPosition > GROUND_Y) {
+        setYPosition(GROUND_Y);
+        setJumpVelocity(0);
+        setIsJumping("grounded");
+      }
+    }
+  });
 
   return (
     <Sprite
