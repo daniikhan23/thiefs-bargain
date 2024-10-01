@@ -21,7 +21,7 @@ const GameStage = ({ gameState, score, setScore }) => {
   return (
     <Container>
       {/* Background */}
-      <Player />
+      <Player position={{ x: 50, y: 400 }} />
       {/* Obstacles */}
       <ScoreDisplay score={Math.floor(score)} />
     </Container>
