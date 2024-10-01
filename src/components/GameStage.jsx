@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { Stage, Container, Sprite } from "@pixi/react";
-import { useApp } from "@pixi/react-pixi";
+import { Stage, Container, Sprite, useApp } from "@pixi/react";
+import Player from "./Player";
+import ScoreDisplay from "./ScoreDisplay";
 
 const GameStage = ({ gameState, score, setScore }) => {
   const app = useApp();
@@ -18,18 +19,12 @@ const GameStage = ({ gameState, score, setScore }) => {
   }, [gameState, app.ticker, setScore]);
 
   return (
-    <Stage
-      options={{ backgroundColor: 0x1099bb }}
-      width={"100%"}
-      height={"100%"}
-    >
-      <Container>
-        {/* Background */}
-        <Player />
-        {/* Obstacles */}
-        <ScoreDisplay score={Math.floor(score)} />
-      </Container>
-    </Stage>
+    <Container>
+      {/* Background */}
+      <Player />
+      {/* Obstacles */}
+      <ScoreDisplay score={Math.floor(score)} />
+    </Container>
   );
 };
 

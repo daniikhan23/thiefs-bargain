@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { BlurFilter, TextStyle } from "pixi.js";
 import { Stage, Container, Sprite, Text } from "@pixi/react";
+import GameStage from "./GameStage";
 
 const Game = () => {
   const [gameState, setGameState] = useState("start");
   const [score, setScore] = useState(0);
-
-  const blurFilter = useMemo(() => new BlurFilter(2), []);
-  const bunnyUrl = "https://pixijs.io/pixi-react/img/bunny.png";
+  const [stageSize, setStageSize] = useState({ width: 1, height: 1 });
+  const gameContainerRef = useRef(null);
 
   const startGame = () => {
     setGameState("playing");
@@ -22,10 +22,30 @@ const Game = () => {
     return finalScore;
   };
 
+  useEffect(() => {
+    const updateStageDimensions = () => {
+      if (gameContainerRef.current) {
+        setStageSize({
+          width: gameContainerRef.current.clientWidth,
+          height: gameContainerRef.current.clientHeight,
+        });
+      }
+    };
+
+    updateStageDimensions();
+    window.addEventListener("resize", updateStageDimensions);
+
+    return () => window.removeEventListener("resize", updateStageDimensions);
+  }, []);
+
   return (
     <>
-      <div className="bg-black w-[60vw] h-[60vh] text-center rounded-lg z-0">
-        <div className="main h-[90%]">
+      <div
+        className="bg-black w-[60vw] h-[60vh] text-center rounded-lg z-0"
+        ref={gameContainerRef}
+      >
+        <div className="main h-[90%] w-[100%]">
+          {/* start button */}
           {gameState === "start" && (
             <div className="flex flex-col justify-center items-center mb-5 gap-5">
               <h1 className="text-white text-3xl font-bold underline">
@@ -40,6 +60,24 @@ const Game = () => {
               </button>
             </div>
           )}
+
+          {/* render game */}
+          {gameState === "playing" && (
+            <Stage
+              options={{ backgroundColor: 0x1099bb }}
+              width={stageSize.width}
+              height={stageSize.height}
+              className="z-25"
+            >
+              <GameStage
+                gameState={gameState}
+                score={score}
+                setScore={setScore}
+              />
+            </Stage>
+          )}
+
+          {/* scoreboard  */}
           {gameState === "finished" && (
             <div className="text-center z-50 text-white">
               <h2 className="text-3xl mb-4 font-bold ">Game Over!</h2>
@@ -49,6 +87,8 @@ const Game = () => {
         </div>
         <div className="border divide-x"></div>
       </div>
+
+      {/* temporary endgame button */}
       {gameState === "playing" && (
         <button
           onClick={endGame}
@@ -57,6 +97,8 @@ const Game = () => {
           End Game
         </button>
       )}
+
+      {/* restart button */}
       {gameState === "finished" && (
         <div className="text-center">
           <button
