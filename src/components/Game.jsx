@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { BlurFilter, TextStyle } from "pixi.js";
 import { Stage, Container, Sprite, Text } from "@pixi/react";
 import GameStage from "./GameStage";
+import beachBg from "../../public/assets/background/beach/png/full_background.png";
 
 const Game = () => {
   const [gameState, setGameState] = useState("start");
