@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { BlurFilter, TextStyle } from "pixi.js";
+import { Stage, Container, Sprite, Text } from "@pixi/react";
 
 const Game = () => {
   const [gameState, setGameState] = useState("start");
   const [score, setScore] = useState(0);
+
+  const blurFilter = useMemo(() => new BlurFilter(2), []);
+  const bunnyUrl = "https://pixijs.io/pixi-react/img/bunny.png";
 
   const startGame = () => {
     setGameState("playing");
@@ -19,7 +24,7 @@ const Game = () => {
 
   return (
     <>
-      <div className="bg-black w-[60vw] h-[60vh] text-center rounded-lg">
+      <div className="bg-black w-[60vw] h-[60vh] text-center rounded-lg z-0">
         <div className="main h-[90%]">
           {gameState === "start" && (
             <div className="flex flex-col justify-center items-center mb-5 gap-5">
