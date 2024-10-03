@@ -3,7 +3,7 @@ import { Sprite, useTick } from "@pixi/react";
 import { Texture, Rectangle } from "pixi.js";
 import thiefSprite from "../../public/assets/sprites/thief-1.0/PNG/48x64_scale2x/thief.png";
 
-const GROUND_Y = 350;
+const GROUND_Y = 365;
 const JUMP_VELOCITY = 15;
 const GRAVITY = 0.75;
 

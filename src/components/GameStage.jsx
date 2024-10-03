@@ -28,8 +28,8 @@ const GameStage = ({ gameState, score, setScore }) => {
 
   return (
     <Container>
-      <Background worldPosition={worldPosition} />
-      <Player position={{ x: 150, y: 350 }} />
+      <Background />
+      <Player position={{ x: 150, y: 365 }} />
       {obstacles.map((obstacle) => {
         <Obstacle
           key={obstacle.id}
