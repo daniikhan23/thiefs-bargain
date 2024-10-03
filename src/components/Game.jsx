@@ -50,7 +50,7 @@ const Game = () => {
           {gameState === "start" && (
             <div className="flex flex-col justify-center items-center mb-5 gap-5">
               <h1 className="text-white text-3xl font-bold underline">
-                Welcome to A Thief's Escape
+                Welcome to A Thief's Bargain
               </h1>
               <p className="text-white text-lg">↑ to jump and ↓ to duck</p>
               <button
@@ -86,7 +86,6 @@ const Game = () => {
             </div>
           )}
         </div>
-        <div className="border divide-x"></div>
       </div>
 
       {/* temporary endgame button */}

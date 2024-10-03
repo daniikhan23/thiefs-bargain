@@ -554,16 +554,12 @@ video {
   display: none;
 }
 
-.absolute {
-  position: absolute;
+.z-0 {
+  z-index: 0;
 }
 
 .z-50 {
   z-index: 50;
-}
-
-.z-0 {
-  z-index: 0;
 }
 
 .mb-4 {
@@ -594,24 +590,12 @@ video {
   height: 100vh;
 }
 
-.h-\[100\%\] {
-  height: 100%;
-}
-
-.h-\[50px\] {
-  height: 50px;
-}
-
-.w-\[60vw\] {
-  width: 60vw;
-}
-
 .w-\[100\%\] {
   width: 100%;
 }
 
-.w-\[50px\] {
-  width: 50px;
+.w-\[60vw\] {
+  width: 60vw;
 }
 
 .resize {
