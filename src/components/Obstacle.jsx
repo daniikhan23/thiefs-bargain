@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useEffect } from "react";
 import { Sprite } from "@pixi/react";
 import { Texture } from "pixi.js";
 import arrowImage from "../../public/assets/obstacles/Arrow.png";
@@ -29,7 +29,7 @@ const OBSTACLE_TYPES = {
   },
 };
 
-const Obstacle = ({ x, height, type }) => {
+const Obstacle = ({ x, height, type, onUpdate }) => {
   const obstacleProps = OBSTACLE_TYPES[type];
 
   if (!obstacleProps) return null;

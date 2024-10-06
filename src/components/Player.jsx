@@ -13,7 +13,7 @@ const JUMP_INITIAL_VELOCITY = -6;
 const GRAVITY = 0.12;
 const GROUND_Y = 365; // This should match your original y position
 
-const Player = ({ position }) => {
+const Player = ({ position, onUpdate }) => {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [verticalVelocity, setVerticalVelocity] = useState(0);
   const [playerY, setPlayerY] = useState(GROUND_Y);
@@ -64,6 +64,20 @@ const Player = ({ position }) => {
         setPlayerY(newY);
         setVerticalVelocity(newVelocity);
       }
+    }
+
+    const playerWidth = FRAME_WIDTH;
+    const playerHeight = FRAME_HEIGHT;
+
+    const playerBoundingBox = {
+      x: position.x - playerWidth / 2,
+      y: playerY - playerHeight / 2,
+      width: playerWidth,
+      height: playerHeight,
+    };
+
+    if (onUpdate) {
+      onUpdate(playerY);
     }
   });
 

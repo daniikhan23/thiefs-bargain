@@ -74,6 +74,7 @@ const Game = () => {
                 gameState={gameState}
                 score={score}
                 setScore={setScore}
+                endGame={endGame}
               />
             </Stage>
           )}
