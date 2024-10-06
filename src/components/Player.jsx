@@ -5,12 +5,12 @@ import thiefSprite from "../../public/assets/sprites/thief-1.0/PNG/48x64_scale2x
 
 const FRAME_WIDTH = 48;
 const FRAME_HEIGHT = 64;
-const ANIMATION_SPEED = 0.2;
+const ANIMATION_SPEED = 0.3;
 const SECOND_ROW_Y = 64;
 
 // Jump physics constants
-const JUMP_INITIAL_VELOCITY = -6;
-const GRAVITY = 0.12;
+const JUMP_INITIAL_VELOCITY = -5.5;
+const GRAVITY = 0.1;
 const GROUND_Y = 365; // This should match your original y position
 
 const Player = ({ position, onUpdate }) => {

@@ -4,14 +4,22 @@ import Player from "./Player";
 import ScoreDisplay from "./ScoreDisplay";
 import Background from "./Background";
 import Obstacle from "./Obstacle";
+import HealthDisplay from "./HealthDisplay";
 
-const SCROLL_SPEED = 5;
-const MIN_OBSTACLE_DISTANCE = 300;
-const MAX_OBSTACLE_DISTANCE = 600;
+const SCROLL_SPEED = 3.5;
+const MIN_OBSTACLE_DISTANCE = 200;
+const MAX_OBSTACLE_DISTANCE = 500;
 const MIN_ARROW_HEIGHT = 10;
 const MAX_ARROW_HEIGHT = 150;
 
-const GameStage = ({ gameState, score, setScore, endGame }) => {
+const GameStage = ({
+  gameState,
+  score,
+  setScore,
+  health,
+  setHealth,
+  endGame,
+}) => {
   const app = useApp();
   const [obstacles, setObstacles] = useState([]);
   const [nextObstacleDistance, setNextObstacleDistance] = useState(0);
@@ -89,9 +97,9 @@ const GameStage = ({ gameState, score, setScore, endGame }) => {
 
   useEffect(() => {
     if (gameState === "playing") {
-      const playerWidth = 48; // Adjust to actual player width
-      const playerHeight = 64; // Adjust to actual player height
-      const playerX = 150; // Player's X position
+      const playerWidth = 48;
+      const playerHeight = 64;
+      const playerX = 150;
 
       const gameLoop = (delta) => {
         // Update obstacles
@@ -115,7 +123,7 @@ const GameStage = ({ gameState, score, setScore, endGame }) => {
         });
 
         // Update score
-        setScore((prevScore) => prevScore + delta * 0.1);
+        setScore((prevScore) => prevScore + delta / 60);
 
         // Calculate player's bounding box
         const playerBoundingBox = {
@@ -139,7 +147,18 @@ const GameStage = ({ gameState, score, setScore, endGame }) => {
           };
 
           if (checkCollision(playerBoundingBox, obstacleBoundingBox)) {
-            endGame();
+            setHealth((prevHealth) => {
+              const newHealth = prevHealth - 1;
+              if (newHealth <= 0) {
+                endGame();
+              }
+              return newHealth;
+            });
+
+            setObstacles((currentObstacles) =>
+              currentObstacles.filter((obs) => obs.id !== obstacle.id)
+            );
+
             break;
           }
         }
@@ -161,6 +180,8 @@ const GameStage = ({ gameState, score, setScore, endGame }) => {
   return (
     <Container>
       <Background />
+      <HealthDisplay health={health} />
+      <ScoreDisplay score={Math.floor(score)} />
       <Player
         position={{ x: 150, y: 365 }}
         onUpdate={(newY) => setPlayerY(newY)}
@@ -168,7 +189,6 @@ const GameStage = ({ gameState, score, setScore, endGame }) => {
       {obstacles.map((obstacle) => (
         <Obstacle key={obstacle.id} {...obstacle} />
       ))}
-      <ScoreDisplay score={Math.floor(score)} />
     </Container>
   );
 };

@@ -7,18 +7,19 @@ import beachBg from "../../public/assets/background/beach/png/full_background.pn
 const Game = () => {
   const [gameState, setGameState] = useState("start");
   const [score, setScore] = useState(0);
+  const [health, setHealth] = useState(3);
   const [stageSize, setStageSize] = useState({ width: 1, height: 1 });
   const gameContainerRef = useRef(null);
 
   const startGame = () => {
     setGameState("playing");
     setScore(0);
+    setHealth(3);
   };
 
   const endGame = () => {
     setGameState("finished");
     const finalScore = score;
-    setScore(0);
 
     return finalScore;
   };
@@ -74,6 +75,8 @@ const Game = () => {
                 gameState={gameState}
                 score={score}
                 setScore={setScore}
+                health={health}
+                setHealth={setHealth}
                 endGame={endGame}
               />
             </Stage>
@@ -83,7 +86,7 @@ const Game = () => {
           {gameState === "finished" && (
             <div className="text-center z-50 text-white">
               <h2 className="text-3xl mb-4 font-bold ">Game Over!</h2>
-              <p className="text-2xl">Score: {score}</p>
+              <p className="text-2xl">Score: {Math.floor(score)}</p>
             </div>
           )}
         </div>
