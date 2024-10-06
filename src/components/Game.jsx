@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { BlurFilter, TextStyle } from "pixi.js";
 import { Stage, Container, Sprite, Text } from "@pixi/react";
 import GameStage from "./GameStage";
-import beachBg from "../../public/assets/background/beach/png/full_background.png";
+import logo from "../../public/assets/logo/cowled.png";
 
 const Game = () => {
   const [gameState, setGameState] = useState("start");
@@ -50,10 +50,12 @@ const Game = () => {
           {/* start button */}
           {gameState === "start" && (
             <div className="flex flex-col justify-center items-center mb-5 gap-5">
-              <h1 className="text-white text-3xl font-bold underline">
+              <h1 className="text-white text-3xl font-bold underline mt-5">
                 Welcome to A Thief's Bargain
               </h1>
-              <p className="text-white text-lg">↑ to jump and ↓ to duck</p>
+              <img src={logo} height={"300px"} width={"300px"} />
+
+              <p className="text-white text-lg">↑ or space to jump </p>
               <button
                 onClick={startGame}
                 className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700"
@@ -84,9 +86,15 @@ const Game = () => {
 
           {/* scoreboard  */}
           {gameState === "finished" && (
-            <div className="text-center z-50 text-white">
+            <div className="text-center z-50 text-white mt-5">
               <h2 className="text-3xl mb-4 font-bold ">Game Over!</h2>
               <p className="text-2xl">Score: {Math.floor(score)}</p>
+              <button
+                onClick={startGame}
+                className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700 mt-5"
+              >
+                Restart Game
+              </button>
             </div>
           )}
         </div>
@@ -100,18 +108,6 @@ const Game = () => {
         >
           End Game
         </button>
-      )}
-
-      {/* restart button */}
-      {gameState === "finished" && (
-        <div className="text-center">
-          <button
-            onClick={startGame}
-            className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700 mt-5"
-          >
-            Restart Game
-          </button>
-        </div>
       )}
     </>
   );

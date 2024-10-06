@@ -6,7 +6,7 @@ import Background from "./Background";
 import Obstacle from "./Obstacle";
 import HealthDisplay from "./HealthDisplay";
 
-const SCROLL_SPEED = 3.5;
+const MAX_SCROLL_SPEED = 10;
 const MIN_OBSTACLE_DISTANCE = 200;
 const MAX_OBSTACLE_DISTANCE = 500;
 const MIN_ARROW_HEIGHT = 10;
@@ -24,6 +24,7 @@ const GameStage = ({
   const [obstacles, setObstacles] = useState([]);
   const [nextObstacleDistance, setNextObstacleDistance] = useState(0);
   const [playerY, setPlayerY] = useState(365); // Initial Y position of the player
+  const [scrollSpeed, setScrollSpeed] = useState(3.5);
 
   const generateRandomDistance = () => {
     return (
@@ -107,11 +108,11 @@ const GameStage = ({
           let updatedObstacles = currentObstacles
             .map((obstacle) => ({
               ...obstacle,
-              x: obstacle.x - SCROLL_SPEED * delta,
+              x: obstacle.x - scrollSpeed * delta,
             }))
             .filter((obstacle) => obstacle.x > -100);
 
-          setNextObstacleDistance((prev) => prev - SCROLL_SPEED * delta);
+          setNextObstacleDistance((prev) => prev - scrollSpeed * delta);
 
           if (nextObstacleDistance <= 0) {
             const newObstacle = generateObstacle();
@@ -176,6 +177,13 @@ const GameStage = ({
     obstacles,
     playerY, // Include playerY in dependencies
   ]);
+
+  // Increase scroll speed by 0.01 for every 5 points in the score
+  useEffect(() => {
+    const speedIncrease = Math.floor(score / 5) * 0.35;
+    const newScrollSpeed = 3.5 + speedIncrease;
+    setScrollSpeed(Math.min(newScrollSpeed, MAX_SCROLL_SPEED));
+  }, [score]);
 
   return (
     <Container>

@@ -626,6 +626,10 @@ video {
   height: 100vh;
 }
 
+.h-\[95\%\] {
+  height: 95%;
+}
+
 .w-\[100\%\] {
   width: 100%;
 }
@@ -652,6 +656,10 @@ video {
 
 .gap-5 {
   gap: 1.25rem;
+}
+
+.justify-self-center {
+  justify-self: center;
 }
 
 .rounded-lg {
