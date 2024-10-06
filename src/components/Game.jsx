@@ -43,17 +43,22 @@ const Game = () => {
   return (
     <>
       <div
-        className="bg-black w-[60vw] h-[60vh] text-center rounded-lg z-0"
+        className="bg-black w-[60vw] h-[60vh] text-center rounded-lg z-0 "
         ref={gameContainerRef}
       >
         <div className="main h-[90%] w-[100%]">
           {/* start button */}
           {gameState === "start" && (
             <div className="flex flex-col justify-center items-center mb-5 gap-5">
-              <h1 className="text-white text-3xl font-bold underline mt-5">
+              <img
+                src={logo}
+                height={"300px"}
+                width={"300px"}
+                className="mt-5"
+              />
+              <h1 className="text-white text-xl">
                 Welcome to A Thief's Bargain
               </h1>
-              <img src={logo} height={"300px"} width={"300px"} />
 
               <p className="text-white text-lg">↑ or space to jump </p>
               <button

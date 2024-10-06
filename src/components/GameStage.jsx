@@ -34,14 +34,12 @@ const GameStage = ({
   };
 
   const generateObstacle = () => {
-    // Randomly choose obstacle type
-    const obstacleTypes = ["ARROW", "SPIKE", "ENEMY"];
+    const obstacleTypes = ["ARROW", "SPIKE", "ARCHER", "GUARD", "BEARD"];
     const randomType =
       obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
 
     let height = 0;
 
-    // Only arrows need random height
     if (randomType === "ARROW") {
       height =
         MIN_ARROW_HEIGHT +
@@ -49,7 +47,7 @@ const GameStage = ({
     }
 
     return {
-      id: Date.now() + Math.random(), // Ensure unique ID
+      id: Date.now() + Math.random(),
       x: app.screen.width,
       height,
       type: randomType,
@@ -77,10 +75,26 @@ const GameStage = ({
         height: 48,
         isGroundObstacle: true,
       },
-      ENEMY: {
-        width: 40,
-        height: 50,
+      ARCHER: {
+        width: 48,
+        height: 64,
         isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      GUARD: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      BEARD: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
       },
     };
 
