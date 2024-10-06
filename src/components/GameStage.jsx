@@ -34,7 +34,18 @@ const GameStage = ({
   };
 
   const generateObstacle = () => {
-    const obstacleTypes = ["ARROW", "SPIKE", "ARCHER", "GUARD", "BEARD"];
+    const obstacleTypes = [
+      "ARROW",
+      "SPIKE",
+      "ARCHER",
+      "GUARD",
+      "BEARD",
+      "SAMURAI",
+      "SOLDIER",
+      "KING",
+      "TAXMAN",
+      "KNIGHT",
+    ];
     const randomType =
       obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
 
@@ -90,6 +101,41 @@ const GameStage = ({
         frames: 3,
       },
       BEARD: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      SAMURAI: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      SOLDIER: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      KING: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      TAXMAN: {
+        width: 48,
+        height: 64,
+        isGroundObstacle: true,
+        isAnimated: true,
+        frames: 3,
+      },
+      KNIGHT: {
         width: 48,
         height: 64,
         isGroundObstacle: true,
