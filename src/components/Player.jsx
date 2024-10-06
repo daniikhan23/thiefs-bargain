@@ -8,59 +8,82 @@ const FRAME_HEIGHT = 64;
 const ANIMATION_SPEED = 0.2;
 const SECOND_ROW_Y = 64;
 
+// Jump physics constants
+const JUMP_INITIAL_VELOCITY = -6;
+const GRAVITY = 0.12;
+const GROUND_Y = 365; // This should match your original y position
+
 const Player = ({ position }) => {
   const [currentFrame, setCurrentFrame] = useState(0);
+  const [verticalVelocity, setVerticalVelocity] = useState(0);
+  const [playerY, setPlayerY] = useState(GROUND_Y);
   const [isJumping, setIsJumping] = useState(false);
 
-  // Preload textures from the second row of the sprite sheet
   const textures = useMemo(() => {
     const baseTexture = Texture.from(thiefSprite);
     return [
       new Texture(
         baseTexture,
         new Rectangle(0, SECOND_ROW_Y, FRAME_WIDTH, FRAME_HEIGHT)
-      ), // First frame
+      ),
       new Texture(
         baseTexture,
         new Rectangle(FRAME_WIDTH, SECOND_ROW_Y, FRAME_WIDTH, FRAME_HEIGHT)
-      ), // Second frame
+      ),
       new Texture(
         baseTexture,
         new Rectangle(FRAME_WIDTH * 0, SECOND_ROW_Y, FRAME_WIDTH, FRAME_HEIGHT)
-      ), // Third frame
+      ),
       new Texture(
         baseTexture,
         new Rectangle(FRAME_WIDTH * 0, SECOND_ROW_Y, FRAME_WIDTH, FRAME_HEIGHT)
-      ), // Fourth frame
+      ),
     ];
   }, []);
 
   useTick((delta) => {
-    if (!isJumping) {
-      setCurrentFrame((prevFrame) => {
-        const nextFrame = prevFrame + ANIMATION_SPEED * delta;
-        return nextFrame % textures.length; // Ensure the frame wraps within bounds
-      });
+    // Handle regular animation
+    setCurrentFrame((prevFrame) => {
+      const nextFrame = prevFrame + ANIMATION_SPEED * delta;
+      return nextFrame % textures.length;
+    });
+
+    if (isJumping) {
+      // Update position
+      const newY = playerY + verticalVelocity;
+
+      // Apply gravity
+      const newVelocity = verticalVelocity + GRAVITY;
+
+      // Check if landed
+      if (newY >= GROUND_Y) {
+        setPlayerY(GROUND_Y);
+        setVerticalVelocity(0);
+        setIsJumping(false);
+      } else {
+        setPlayerY(newY);
+        setVerticalVelocity(newVelocity);
+      }
     }
   });
 
   const handleKeyDown = (event) => {
-    if (event.code === "Space" && !isJumping) {
+    if ((event.code === "Space" || event.code === "ArrowUp") && !isJumping) {
       setIsJumping(true);
-      setTimeout(() => setIsJumping(false), 500); // Adjust jump duration as needed
+      setVerticalVelocity(JUMP_INITIAL_VELOCITY);
     }
   };
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isJumping]);
 
   return (
     <Sprite
       texture={textures[Math.floor(currentFrame)]}
       x={position.x}
-      y={position.y}
+      y={playerY}
       anchor={0.5}
       scale={{ x: 1, y: 1 }}
     />
