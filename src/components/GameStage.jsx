@@ -5,19 +5,35 @@ import Player from "./Player";
 import ScoreDisplay from "./ScoreDisplay";
 import HealthDisplay from "./HealthDisplay";
 import Obstacle from "./Obstacle";
+import Ground from "./Ground";
+
 import forestBackTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/back-trees.png";
 import forestFrontTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/front-trees.png";
 import forestLight from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/lights.png";
 import forestMiddleTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/middle-trees.png";
+
 import mountainBg from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-bg.png";
 import mountainFar from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-montain-far.png";
 import mountains from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-mountains.png";
 import trees from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-trees.png";
 import mountainForegroundTrees from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-foreground-trees.png";
+
 import industrialBg from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/bg.png";
 import industrialForeground from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/foreground.png";
 import industrialBuildings from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/buildings.png";
 import industrialFarBuildings from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/far-buildings.png";
+
+import starryBg from "../../public/assets/background/true-bgs/starry/background_sky.png";
+import starryClouds from "../../public/assets/background/true-bgs/starry/clouds.png";
+
+import wastelandMtsOne from "../../public/assets/background/true-bgs/wasteland/mountains-1.png";
+import wastelandMtsTwo from "../../public/assets/background/true-bgs/wasteland/mountains-2.png";
+import wastelandSky from "../../public/assets/background/true-bgs/wasteland/sky.png";
+
+import wasteTiles from "../../public/assets/background/true-bgs/wasteland/tile.png";
+import starryTiles from "../../public/assets/background/true-bgs/starry/tile.png";
+import grassTiles from "../../public/assets/tilesets/various-tilesets/grassTile.png";
+import industrialTiles from "../../public/assets/tilesets/various-tilesets/industrialTile.png";
 
 const MAX_SCROLL_SPEED = 10;
 const MIN_OBSTACLE_DISTANCE = 200;
@@ -26,67 +42,108 @@ const MIN_ARROW_HEIGHT = 10;
 const MAX_ARROW_HEIGHT = 150;
 
 const backgroundSets = [
-  // First background set (Forest)
-  [
-    {
-      image: forestBackTrees,
-      speed: 0.2,
-    },
-    {
-      image: forestLight,
-      speed: 0.4,
-    },
-    {
-      image: forestMiddleTrees,
-      speed: 0.6,
-    },
-    {
-      image: forestFrontTrees,
-      speed: 0.8,
-    },
-  ],
-  // Second background set (Mountains)
-  [
-    {
-      image: mountainBg,
-      speed: 0.2,
-    },
-    {
-      image: mountainFar,
-      speed: 0.4,
-    },
-    {
-      image: mountains,
-      speed: 0.6,
-    },
-    {
-      image: trees,
-      speed: 0.8,
-    },
-    {
-      image: mountainForegroundTrees,
-      speed: 1.0,
-    },
-  ],
-  // Third background set (Industrial)
-  [
-    {
-      image: industrialBg,
-      speed: 0.2,
-    },
-    {
-      image: industrialFarBuildings,
-      speed: 0.4,
-    },
-    {
-      image: industrialBuildings,
-      speed: 0.6,
-    },
-    {
-      image: industrialForeground,
-      speed: 0.8,
-    },
-  ],
+  // Forest background set
+  {
+    layers: [
+      {
+        image: forestBackTrees,
+        speed: 0.2,
+      },
+      {
+        image: forestLight,
+        speed: 0.4,
+      },
+      {
+        image: forestMiddleTrees,
+        speed: 0.6,
+      },
+      {
+        image: forestFrontTrees,
+        speed: 0.8,
+      },
+    ],
+    tile: grassTiles,
+  },
+  // Mountains background set
+  {
+    layers: [
+      {
+        image: mountainBg,
+        speed: 0.2,
+      },
+      {
+        image: mountainFar,
+        speed: 0.4,
+      },
+      {
+        image: mountains,
+        speed: 0.6,
+      },
+      {
+        image: trees,
+        speed: 0.8,
+      },
+      {
+        image: mountainForegroundTrees,
+        speed: 1.0,
+      },
+    ],
+    tile: wasteTiles,
+  },
+  // Wasteland background set
+  {
+    layers: [
+      {
+        image: wastelandSky,
+        speed: 0.2,
+      },
+      {
+        image: wastelandMtsOne,
+        speed: 0.4,
+      },
+      {
+        image: wastelandMtsTwo,
+        speed: 0.6,
+      },
+    ],
+    tile: wasteTiles,
+  },
+  // Industrial background set
+  {
+    layers: [
+      {
+        image: industrialBg,
+        speed: 0.2,
+      },
+      {
+        image: industrialFarBuildings,
+        speed: 0.4,
+      },
+      {
+        image: industrialBuildings,
+        speed: 0.6,
+      },
+      {
+        image: industrialForeground,
+        speed: 0.8,
+      },
+    ],
+    tile: industrialTiles,
+  },
+  // Starry Nights background set (Add your starry night layers)
+  {
+    layers: [
+      {
+        image: starryBg,
+        speed: 0.2,
+      },
+      {
+        image: starryClouds,
+        speed: 0.4,
+      },
+    ],
+    tile: starryTiles,
+  },
 ];
 
 const GameStage = ({
@@ -100,9 +157,9 @@ const GameStage = ({
   const app = useApp();
   const [obstacles, setObstacles] = useState([]);
   const [nextObstacleDistance, setNextObstacleDistance] = useState(0);
-  const [playerY, setPlayerY] = useState(365); // Initial Y position of the player
+  const [playerY, setPlayerY] = useState(365); // Adjust based on ground level
   const [scrollSpeed, setScrollSpeed] = useState(3.5);
-  const [backgroundLayers, setBackgroundLayers] = useState([]);
+  const [backgroundData, setBackgroundData] = useState(null);
 
   const generateRandomDistance = () => {
     return (
@@ -234,18 +291,17 @@ const GameStage = ({
     };
   };
 
-  // Randomly select a background set when game starts or restarts
   useEffect(() => {
     if (gameState === "playing" || gameState === "restart") {
       const randomIndex = Math.floor(Math.random() * backgroundSets.length);
-      setBackgroundLayers(backgroundSets[randomIndex]);
+      setBackgroundData(backgroundSets[randomIndex]);
 
-      // Reset other game states if necessary
+      // Reset other game states
       setObstacles([]);
       setNextObstacleDistance(generateRandomDistance());
       setScrollSpeed(3.5);
       setScore(0);
-      setHealth(3); // Assuming the player starts with 3 health points
+      setHealth(3); // Adjust as necessary
     }
   }, [gameState, setScore, setHealth]);
 
@@ -337,18 +393,23 @@ const GameStage = ({
 
   // Increase scroll speed by 0.35 for every 5 points in the score
   useEffect(() => {
-    const speedIncrease = Math.floor(score / 5) * 0.35;
+    const speedIncrease = Math.floor(score / 5) * 0.25;
     const newScrollSpeed = 3.5 + speedIncrease;
     setScrollSpeed(Math.min(newScrollSpeed, MAX_SCROLL_SPEED));
   }, [score]);
 
   return (
     <Container>
-      <Background layers={backgroundLayers} />
+      {backgroundData && (
+        <>
+          <Background layers={backgroundData.layers} />
+          <Ground scrollSpeed={scrollSpeed} tileImage={backgroundData.tile} />
+        </>
+      )}
       <HealthDisplay health={health} />
       <ScoreDisplay score={Math.floor(score)} />
       <Player
-        position={{ x: 150, y: 365 }}
+        position={{ x: 150, y: playerY }}
         onUpdate={(newY) => setPlayerY(newY)}
       />
       {obstacles.map((obstacle) => (
