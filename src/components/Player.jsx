@@ -12,7 +12,7 @@ const SECOND_ROW_Y = 64;
 // Jump physics constants
 const JUMP_INITIAL_VELOCITY = -5.5;
 const GRAVITY = 0.1;
-const GROUND_Y = 365; // This should match your original y position
+const GROUND_Y = 520; // This should match your original y position
 
 const Player = ({ position, onUpdate }) => {
   const [currentFrame, setCurrentFrame] = useState(0);

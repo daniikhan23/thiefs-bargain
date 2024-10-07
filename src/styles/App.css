@@ -2,6 +2,12 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+.app {
+  background-image: url("../../public/assets/background-img/bg-2.png");
+  background-repeat: "no-repeat";
+  background-size: "contain";
+}
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;

@@ -160,7 +160,7 @@ const GameStage = ({
   const app = useApp();
   const [obstacles, setObstacles] = useState([]);
   const [nextObstacleDistance, setNextObstacleDistance] = useState(0);
-  const [playerY, setPlayerY] = useState(365); // Adjust based on ground level
+  const [playerY, setPlayerY] = useState(520); // Adjust based on ground level
   const [scrollSpeed, setScrollSpeed] = useState(3.5);
   const [backgroundData, setBackgroundData] = useState(null);
 
@@ -285,8 +285,8 @@ const GameStage = ({
     const obstacleProps = OBSTACLE_TYPES[type];
 
     const y = obstacleProps.isGroundObstacle
-      ? 400 - obstacleProps.height // Adjust based on your ground level
-      : 400 - height; // For flying obstacles
+      ? 555 - obstacleProps.height // Adjust based on your ground level
+      : 555 - height; // For flying obstacles
 
     return {
       ...obstacleProps,

@@ -3,6 +3,7 @@ import { Stage } from "@pixi/react";
 import GameStage from "./GameStage";
 import logo from "../../public/assets/logo/cowled.png";
 import menuImage from "../../public/assets/main-menu/main-menu.png";
+import "../styles/Game.css";
 
 const Game = () => {
   const [gameState, setGameState] = useState("start");
@@ -42,9 +43,9 @@ const Game = () => {
   return (
     <>
       <div
-        className="w-[60vw] h-[60vh] text-center rounded-lg z-0 bg-cover bg-center bg-no-repeat"
+        className="main w-[60vw] h-[60vh] text-center rounded-lg z-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('../../public/assets/main-menu/main-menu.png')`,
+          backgroundImage: `${menuImage}`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
         }}
@@ -54,8 +55,8 @@ const Game = () => {
           {/* Start Screen */}
           {gameState === "start" && (
             <div className="flex flex-col justify-center items-center gap-5">
-              <p className="text-white text-xl font-bold">
-                ↑ or space to jump{" "}
+              <p className="text-black text-3xl font-bold mb-5">
+                Press ↑ or space to jump{" "}
               </p>
               <button
                 onClick={startGame}
@@ -70,8 +71,8 @@ const Game = () => {
           {gameState === "playing" && (
             <Stage
               options={{ backgroundColor: 0x1099bb }}
-              width={stageSize.width}
-              height={stageSize.height}
+              width={800}
+              height={600}
               className="z-25"
             >
               <GameStage

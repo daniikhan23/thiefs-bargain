@@ -30,7 +30,7 @@ const Ground = ({ scrollSpeed, tileImage }) => {
     <TilingSprite
       texture={tileTexture}
       x={0}
-      y={app.screen.height - tileHeight * scale}
+      y={600 - tileHeight * scale}
       width={app.screen.width}
       height={tileHeight * scale}
       tilePosition={{ x: tilePositionXRef.current, y: 0 }}

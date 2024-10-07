@@ -13,7 +13,7 @@ import taxmanImage from "../../public/assets/obstacles/enemy/taxman/taxmannpc.pn
 import knightImage from "../../public/assets/obstacles/enemy/knight/knight.png";
 
 const ANIMATION_SPEED = 0.1; // Adjust for smoother animation
-const GROUND_Y = 400; // Adjust based on your ground level
+const GROUND_Y = 555; // Adjust based on your ground level
 
 const OBSTACLE_TYPES = {
   ARROW: {
