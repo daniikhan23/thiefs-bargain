@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Sprite, useTick } from "@pixi/react";
 import { Texture, Rectangle } from "pixi.js";
 import thiefSprite from "../../public/assets/sprites/thief-1.0/PNG/48x64_scale2x/thief.png";
+import soundManager from "./SoundManager";
 
 const FRAME_WIDTH = 48;
 const FRAME_HEIGHT = 64;
@@ -83,6 +84,7 @@ const Player = ({ position, onUpdate }) => {
 
   const handleKeyDown = (event) => {
     if ((event.code === "Space" || event.code === "ArrowUp") && !isJumping) {
+      soundManager.playSound("jump");
       setIsJumping(true);
       setVerticalVelocity(JUMP_INITIAL_VELOCITY);
     }

@@ -35,11 +35,14 @@ import starryTiles from "../../public/assets/background/true-bgs/starry/tile.png
 import grassTiles from "../../public/assets/tilesets/various-tilesets/grassTile.png";
 import industrialTiles from "../../public/assets/tilesets/various-tilesets/industrialTile.png";
 
+import soundManager from "./SoundManager";
+
 const MAX_SCROLL_SPEED = 10;
 const MIN_OBSTACLE_DISTANCE = 200;
 const MAX_OBSTACLE_DISTANCE = 500;
 const MIN_ARROW_HEIGHT = 10;
 const MAX_ARROW_HEIGHT = 150;
+const TILE_SPEED = 2;
 
 const backgroundSets = [
   // Forest background set
@@ -357,6 +360,7 @@ const GameStage = ({
           };
 
           if (checkCollision(playerBoundingBox, obstacleBoundingBox)) {
+            soundManager.playSound("collision");
             setHealth((prevHealth) => {
               const newHealth = prevHealth - 1;
               if (newHealth <= 0) {
@@ -391,12 +395,20 @@ const GameStage = ({
     endGame,
   ]);
 
-  // Increase scroll speed by 0.35 for every 5 points in the score
+  // Increase scroll speed by 0.25 for every 5 points in the score
   useEffect(() => {
     const speedIncrease = Math.floor(score / 5) * 0.25;
     const newScrollSpeed = 3.5 + speedIncrease;
     setScrollSpeed(Math.min(newScrollSpeed, MAX_SCROLL_SPEED));
   }, [score]);
+
+  useEffect(() => {
+    if (gameState === "playing") {
+      soundManager.playMusic();
+    } else if (gameState === "gameover") {
+      soundManager.stopMusic();
+    }
+  }, [gameState]);
 
   return (
     <Container>
