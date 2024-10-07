@@ -594,12 +594,20 @@ video {
   height: 100vh;
 }
 
+.h-\[40vh\] {
+  height: 40vh;
+}
+
 .w-\[100\%\] {
   width: 100%;
 }
 
 .w-\[60vw\] {
   width: 60vw;
+}
+
+.w-\[40vw\] {
+  width: 40vw;
 }
 
 .resize {

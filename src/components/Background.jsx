@@ -1,72 +1,94 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Sprite, useTick, useApp } from "@pixi/react";
-import useLoadedTextures from "./useLoadedTextures"; // Adjust the import path
+import { Texture } from "pixi.js";
 
-import mountainBg from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-bg.png";
-import mountainFar from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-montain-far.png";
-import mountains from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-mountains.png";
-import trees from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-trees.png";
-import mountainForegroundTrees from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-foreground-trees.png";
+import forestBackTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/back-trees.png";
+import forestFrontTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/front-trees.png";
+import forestLight from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/lights.png";
+import forestMiddleTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/middle-trees.png";
 
 const Background = () => {
   const app = useApp();
 
-  const layers = [
-    {
-      image: mountainBg,
-      speed: 0.2,
-    },
-    {
-      image: mountainFar,
-      speed: 0.4,
-    },
-    {
-      image: mountains,
-      speed: 0.6,
-    },
-    {
-      image: trees,
-      speed: 0.8,
-    },
-    {
-      image: mountainForegroundTrees,
-      speed: 1.0,
-    },
-  ];
+  const layers = useMemo(
+    () => [
+      {
+        image: forestBackTrees,
+        speed: 0.2,
+      },
+      {
+        image: forestLight,
+        speed: 0.4,
+      },
+      {
+        image: forestMiddleTrees,
+        speed: 0.6,
+      },
+      {
+        image: forestFrontTrees,
+        speed: 0.8,
+      },
+    ],
+    []
+  );
 
-  // Use the custom hook to load textures
-  const { textures, loaded } = useLoadedTextures(layers);
+  const textures = useMemo(() => {
+    return layers.map((layer) => Texture.from(layer.image));
+  }, [layers]);
 
-  // Initialize positions for each layer
-  const [positions, setPositions] = useState(layers.map(() => 0));
+  const [loaded, setLoaded] = useState(false);
 
-  // Calculate scales to fit screen height
-  const scales = loaded
-    ? textures.map(({ height }) => {
-        return app.screen.height / height;
-      })
-    : layers.map(() => 1); // Default scale of 1 when textures are not loaded
+  useEffect(() => {
+    let isMounted = true;
+    const checkTexturesLoaded = async () => {
+      const promises = textures.map((texture) => {
+        return new Promise((resolve) => {
+          if (texture.baseTexture.valid) {
+            resolve();
+          } else {
+            texture.baseTexture.once("loaded", () => {
+              resolve();
+            });
+          }
+        });
+      });
+      await Promise.all(promises);
+      if (isMounted) {
+        setLoaded(true);
+      }
+    };
+    checkTexturesLoaded();
+    return () => {
+      isMounted = false;
+    };
+  }, [textures]);
 
-  // Use useTick unconditionally
+  const scales = useMemo(() => {
+    if (!loaded) return layers.map(() => 1);
+    return textures.map((texture) => {
+      return app.screen.height / texture.height;
+    });
+  }, [loaded, textures, app.screen.height]);
+
+  const positionsRef = useRef(layers.map(() => 0));
+
   useTick((delta) => {
     if (!loaded) return; // Wait until textures are loaded
 
-    setPositions((prevPositions) =>
-      prevPositions.map((pos, index) => {
-        const speed = layers[index].speed;
-        let newPos = pos - speed * delta;
-        const textureWidth = textures[index].width * scales[index];
+    layers.forEach((layer, index) => {
+      const speed = layer.speed;
+      let pos = positionsRef.current[index];
+      pos -= speed * delta;
 
-        // Loop the background
-        if (newPos <= -textureWidth) {
-          newPos += textureWidth;
-        }
-        return newPos;
-      })
-    );
+      const textureWidth = textures[index].width * scales[index];
+
+      if (pos <= -textureWidth) {
+        pos += textureWidth;
+      }
+      positionsRef.current[index] = pos;
+    });
   });
 
-  // Conditionally render content based on loaded state
   if (!loaded) {
     return null; // Or render a loading indicator
   }
@@ -75,20 +97,23 @@ const Background = () => {
     <>
       {layers.map((layer, index) => {
         const textureWidth = textures[index].width * scales[index];
-        // Calculate the number of copies needed
-        const copies = Math.ceil(app.screen.width / textureWidth) + 1;
-
+        const position = positionsRef.current[index];
         return (
           <React.Fragment key={`layer-${index}`}>
-            {Array.from({ length: copies }).map((_, copyIndex) => (
-              <Sprite
-                key={`layer-${index}-copy-${copyIndex}`}
-                texture={textures[index].texture}
-                x={positions[index] + textureWidth * copyIndex}
-                y={0}
-                scale={scales[index]}
-              />
-            ))}
+            {/* First copy of the layer */}
+            <Sprite
+              texture={textures[index]}
+              x={position}
+              y={0}
+              scale={{ x: scales[index], y: scales[index] }}
+            />
+            {/* Second copy for seamless looping */}
+            <Sprite
+              texture={textures[index]}
+              x={position + textureWidth}
+              y={0}
+              scale={{ x: scales[index], y: scales[index] }}
+            />
           </React.Fragment>
         );
       })}
