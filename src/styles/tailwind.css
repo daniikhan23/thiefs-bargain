@@ -554,12 +554,12 @@ video {
   display: none;
 }
 
-.z-0 {
-  z-index: 0;
-}
-
 .z-50 {
   z-index: 50;
+}
+
+.z-0 {
+  z-index: 0;
 }
 
 .mb-4 {
@@ -574,28 +574,24 @@ video {
   display: flex;
 }
 
-.h-\[60vh\] {
-  height: 60vh;
-}
-
 .h-full {
   height: 100%;
 }
 
-.min-h-screen {
-  min-height: 100vh;
+.h-screen {
+  height: 100vh;
 }
 
-.w-\[60vw\] {
-  width: 60vw;
+.h-\[60vh\] {
+  height: 60vh;
 }
 
 .w-full {
   width: 100%;
 }
 
-.w-screen {
-  width: 100vw;
+.w-\[60vw\] {
+  width: 60vw;
 }
 
 .resize {
