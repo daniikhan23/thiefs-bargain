@@ -40,7 +40,7 @@ import soundManager from "./SoundManager";
 const MAX_SCROLL_SPEED = 10;
 const MIN_OBSTACLE_DISTANCE = 200;
 const MAX_OBSTACLE_DISTANCE = 500;
-const MIN_ARROW_HEIGHT = 10;
+const MIN_ARROW_HEIGHT = 20;
 const MAX_ARROW_HEIGHT = 150;
 const TILE_SPEED = 2;
 

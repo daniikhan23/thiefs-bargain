@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { BlurFilter, TextStyle } from "pixi.js";
-import { Stage, Container, Sprite, Text } from "@pixi/react";
+import { Stage } from "@pixi/react";
 import GameStage from "./GameStage";
 import logo from "../../public/assets/logo/cowled.png";
+import menuImage from "../../public/assets/main-menu/main-menu.png";
 
 const Game = () => {
   const [gameState, setGameState] = useState("start");
@@ -20,7 +20,6 @@ const Game = () => {
   const endGame = () => {
     setGameState("finished");
     const finalScore = score;
-
     return finalScore;
   };
 
@@ -43,34 +42,31 @@ const Game = () => {
   return (
     <>
       <div
-        className="bg-black w-[60vw] h-[60vh] text-center rounded-lg z-0 "
+        className="w-[60vw] h-[60vh] text-center rounded-lg z-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('../../public/assets/main-menu/main-menu.png')`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+        }}
         ref={gameContainerRef}
       >
-        <div className="main h-[90%] w-[100%]">
-          {/* start button */}
+        <div className=" w-full h-full flex flex-col justify-center items-center rounded-lg">
+          {/* Start Screen */}
           {gameState === "start" && (
-            <div className="flex flex-col justify-center items-center mb-5 gap-5">
-              <img
-                src={logo}
-                height={"300px"}
-                width={"300px"}
-                className="mt-5"
-              />
-              <h1 className="text-white text-xl">
-                Welcome to A Thief's Bargain
-              </h1>
-
-              <p className="text-white text-lg">↑ or space to jump </p>
+            <div className="flex flex-col justify-center items-center gap-5">
+              <p className="text-white text-xl font-bold">
+                ↑ or space to jump{" "}
+              </p>
               <button
                 onClick={startGame}
-                className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700"
+                className="text-white font-bold text-lg bg-purple-800 p-2 rounded-md hover:bg-purple-900"
               >
                 Start Game
               </button>
             </div>
           )}
 
-          {/* render game */}
+          {/* Game Stage */}
           {gameState === "playing" && (
             <Stage
               options={{ backgroundColor: 0x1099bb }}
@@ -89,14 +85,16 @@ const Game = () => {
             </Stage>
           )}
 
-          {/* scoreboard  */}
+          {/* Game Over Screen */}
           {gameState === "finished" && (
             <div className="text-center z-50 text-white mt-5">
               <h2 className="text-3xl mb-4 font-bold ">Game Over!</h2>
-              <p className="text-2xl">Score: {Math.floor(score)}</p>
+              <p className="text-2xl text-black font-bold">
+                Score: {Math.floor(score)}
+              </p>
               <button
                 onClick={startGame}
-                className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700 mt-5"
+                className="text-white font-bold text-lg bg-purple-800 p-2 rounded-md hover:bg-purple-900 mt-5"
               >
                 Restart Game
               </button>
@@ -104,16 +102,6 @@ const Game = () => {
           )}
         </div>
       </div>
-
-      {/* temporary endgame button */}
-      {gameState === "playing" && (
-        <button
-          onClick={endGame}
-          className="text-black font-bold text-lg bg-white p-2 rounded-md hover:bg-red-700 mt-5"
-        >
-          End Game
-        </button>
-      )}
     </>
   );
 };
