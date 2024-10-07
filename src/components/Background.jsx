@@ -2,42 +2,17 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Sprite, useTick, useApp } from "@pixi/react";
 import { Texture } from "pixi.js";
 
-import forestBackTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/back-trees.png";
-import forestFrontTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/front-trees.png";
-import forestLight from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/lights.png";
-import forestMiddleTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/middle-trees.png";
-
-const Background = () => {
+const Background = ({ layers }) => {
   const app = useApp();
 
-  const layers = useMemo(
-    () => [
-      {
-        image: forestBackTrees,
-        speed: 0.2,
-      },
-      {
-        image: forestLight,
-        speed: 0.4,
-      },
-      {
-        image: forestMiddleTrees,
-        speed: 0.6,
-      },
-      {
-        image: forestFrontTrees,
-        speed: 0.8,
-      },
-    ],
-    []
-  );
-
+  // Load textures only when layers change
   const textures = useMemo(() => {
     return layers.map((layer) => Texture.from(layer.image));
   }, [layers]);
 
   const [loaded, setLoaded] = useState(false);
 
+  // Check if all textures are loaded
   useEffect(() => {
     let isMounted = true;
     const checkTexturesLoaded = async () => {
@@ -63,6 +38,7 @@ const Background = () => {
     };
   }, [textures]);
 
+  // Calculate scales based on screen height
   const scales = useMemo(() => {
     if (!loaded) return layers.map(() => 1);
     return textures.map((texture) => {
@@ -70,8 +46,14 @@ const Background = () => {
     });
   }, [loaded, textures, app.screen.height]);
 
-  const positionsRef = useRef(layers.map(() => 0));
+  const positionsRef = useRef([]);
 
+  // Reset positions when layers change
+  useEffect(() => {
+    positionsRef.current = layers.map(() => 0);
+  }, [layers]);
+
+  // Update positions in useTick without causing re-renders
   useTick((delta) => {
     if (!loaded) return; // Wait until textures are loaded
 
@@ -89,6 +71,7 @@ const Background = () => {
     });
   });
 
+  // Render the background layers
   if (!loaded) {
     return null; // Or render a loading indicator
   }

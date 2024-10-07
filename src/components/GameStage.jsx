@@ -1,16 +1,93 @@
 import React, { useEffect, useState } from "react";
 import { Container, useApp } from "@pixi/react";
+import Background from "./Background";
 import Player from "./Player";
 import ScoreDisplay from "./ScoreDisplay";
-import Background from "./Background";
-import Obstacle from "./Obstacle";
 import HealthDisplay from "./HealthDisplay";
+import Obstacle from "./Obstacle";
+import forestBackTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/back-trees.png";
+import forestFrontTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/front-trees.png";
+import forestLight from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/lights.png";
+import forestMiddleTrees from "../../public/assets/background/true-bgs/parallax_forest_pack/parallax_forest_pack/layers/middle-trees.png";
+import mountainBg from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-bg.png";
+import mountainFar from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-montain-far.png";
+import mountains from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-mountains.png";
+import trees from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-trees.png";
+import mountainForegroundTrees from "../../public/assets/background/true-bgs/parallax_mountain_pack/parallax_mountain_pack/layers/mountain-foreground-trees.png";
+import industrialBg from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/bg.png";
+import industrialForeground from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/foreground.png";
+import industrialBuildings from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/buildings.png";
+import industrialFarBuildings from "../../public/assets/background/true-bgs/parallax-industrial-pack/parallax-industrial-pack/layers/far-buildings.png";
 
 const MAX_SCROLL_SPEED = 10;
 const MIN_OBSTACLE_DISTANCE = 200;
 const MAX_OBSTACLE_DISTANCE = 500;
 const MIN_ARROW_HEIGHT = 10;
 const MAX_ARROW_HEIGHT = 150;
+
+const backgroundSets = [
+  // First background set (Forest)
+  [
+    {
+      image: forestBackTrees,
+      speed: 0.2,
+    },
+    {
+      image: forestLight,
+      speed: 0.4,
+    },
+    {
+      image: forestMiddleTrees,
+      speed: 0.6,
+    },
+    {
+      image: forestFrontTrees,
+      speed: 0.8,
+    },
+  ],
+  // Second background set (Mountains)
+  [
+    {
+      image: mountainBg,
+      speed: 0.2,
+    },
+    {
+      image: mountainFar,
+      speed: 0.4,
+    },
+    {
+      image: mountains,
+      speed: 0.6,
+    },
+    {
+      image: trees,
+      speed: 0.8,
+    },
+    {
+      image: mountainForegroundTrees,
+      speed: 1.0,
+    },
+  ],
+  // Third background set (Industrial)
+  [
+    {
+      image: industrialBg,
+      speed: 0.2,
+    },
+    {
+      image: industrialFarBuildings,
+      speed: 0.4,
+    },
+    {
+      image: industrialBuildings,
+      speed: 0.6,
+    },
+    {
+      image: industrialForeground,
+      speed: 0.8,
+    },
+  ],
+];
 
 const GameStage = ({
   gameState,
@@ -25,6 +102,7 @@ const GameStage = ({
   const [nextObstacleDistance, setNextObstacleDistance] = useState(0);
   const [playerY, setPlayerY] = useState(365); // Initial Y position of the player
   const [scrollSpeed, setScrollSpeed] = useState(3.5);
+  const [backgroundLayers, setBackgroundLayers] = useState([]);
 
   const generateRandomDistance = () => {
     return (
@@ -156,6 +234,21 @@ const GameStage = ({
     };
   };
 
+  // Randomly select a background set when game starts or restarts
+  useEffect(() => {
+    if (gameState === "playing" || gameState === "restart") {
+      const randomIndex = Math.floor(Math.random() * backgroundSets.length);
+      setBackgroundLayers(backgroundSets[randomIndex]);
+
+      // Reset other game states if necessary
+      setObstacles([]);
+      setNextObstacleDistance(generateRandomDistance());
+      setScrollSpeed(3.5);
+      setScore(0);
+      setHealth(3); // Assuming the player starts with 3 health points
+    }
+  }, [gameState, setScore, setHealth]);
+
   useEffect(() => {
     if (gameState === "playing") {
       const playerWidth = 48;
@@ -233,12 +326,16 @@ const GameStage = ({
     app.ticker,
     setScore,
     nextObstacleDistance,
-    endGame,
     obstacles,
-    playerY, // Include playerY in dependencies
+    playerY,
+    scrollSpeed,
+    setObstacles,
+    setNextObstacleDistance,
+    setHealth,
+    endGame,
   ]);
 
-  // Increase scroll speed by 0.01 for every 5 points in the score
+  // Increase scroll speed by 0.35 for every 5 points in the score
   useEffect(() => {
     const speedIncrease = Math.floor(score / 5) * 0.35;
     const newScrollSpeed = 3.5 + speedIncrease;
@@ -247,7 +344,7 @@ const GameStage = ({
 
   return (
     <Container>
-      <Background />
+      <Background layers={backgroundLayers} />
       <HealthDisplay health={health} />
       <ScoreDisplay score={Math.floor(score)} />
       <Player
