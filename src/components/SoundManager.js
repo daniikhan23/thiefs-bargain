@@ -2,7 +2,7 @@ import { Howl, Howler } from "howler";
 
 import jumpSoundFile from "../../public/assets/platformer-assets/brackeys_platformer_assets/brackeys_platformer_assets/sounds/jump.wav";
 import collisionSoundFile from "../../public/assets/platformer-assets/brackeys_platformer_assets/brackeys_platformer_assets/sounds/hurt.wav";
-import backgroundMusicFile from "../../public/assets/platformer-assets/brackeys_platformer_assets/brackeys_platformer_assets/sounds/awesomeness.wav";
+import backgroundMusicFile from "../../public/assets/platformer-assets/brackeys_platformer_assets/brackeys_platformer_assets/sounds/awesomeness.mp3";
 
 class SoundManager {
   constructor() {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Stage } from "@pixi/react";
 import GameStage from "./GameStage";
-import logo from "../../public/assets/logo/cowled.png";
 import menuImage from "../../public/assets/main-menu/main-menu.png";
 import "../styles/Game.css";
 
